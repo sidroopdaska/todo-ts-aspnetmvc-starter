@@ -27,5 +27,16 @@ module.exports = {
         path: path.join(__dirname, bundleOutputDir),
         filename: '[name]-bundle.js',
         publicPath: 'dist/'
+    },
+    resolve: {
+        modules: [
+            "node_modules"
+        ],
+        extensions: [
+            ".ts",
+            ".tsx",
+            ".js",
+            ".json"
+        ]
     }
 };

@@ -1,18 +1,24 @@
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "module": "es2015",
-      "moduleResolution": "node",
-      "target": "es5",
-      "jsx": "react",
-      "sourceMap": true,
-      "skipDefaultLibCheck": true,
-      "strict": true,
-      "types": ["webpack-env"]
-    },
-    "exclude": [
-        "bin",
-        "node_modules"
-    ]
-  }
-  
+  "compilerOptions": {
+    "rootDir": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "importHelpers": true,
+    "lib": [
+      "es6",
+      "dom",
+      "es2017"
+    ],
+    "sourceMap": true,
+    "strict": true,
+  },
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "exclude": [
+      "bin",
+      "node_modules"
+  ]
+}
