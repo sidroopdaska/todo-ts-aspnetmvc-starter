@@ -379,9 +379,152 @@ Once complete, open the ```Website``` folder in ```Visual Studio Code```.
 
 ### Create the Singleton API Client
 
+We will not create a Singleton Api Client using the ```axios``` library. This wrapper should provide an easy means for us to make api calls to our backend service.
+
+Create a new file ```apiClient.ts``` and place it under a folder called ```api``` and add the following class to it
+```
+import axios, {AxiosInstance} from 'axios';
+
+export class ApiClient {
+    private static instance: AxiosInstance;
+
+    public static getInstance = (): AxiosInstance => {
+        if (!ApiClient.instance) {
+            ApiClient.createInstance();
+        }
+
+        return ApiClient.instance;
+    }
+
+    private static createInstance = () => {
+        let client = axios.create({
+            baseURL: '/',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            timeout: 10000
+        });
+
+        ApiClient.instance = client;
+    }
+}
+```
+
 ### Create the CRUD API functions
 
+Create a file called ```todoApi.ts``` under the ```api``` folder and add the following code:
+
+```
+import { ITodoItem } from "../models/todoItem";
+import { ApiClient } from "./apiClient";
+
+export async function getAllTodoItems(): Promise<Array<ITodoItem>> {
+    let apiClient = ApiClient.getInstance();
+
+    let result = await apiClient.get('api/todo');
+    return result.data as Array<ITodoItem>;
+}
+
+export async function postNewTodoItem(name: string): Promise<ITodoItem> {
+    let apiClient = ApiClient.getInstance();
+    let item: ITodoItem = {
+        name,
+        isCompleted: false
+    };
+
+    let result = await apiClient.post('api/todo', JSON.stringify(item));
+    return result.data as ITodoItem;
+}
+```
+
+### Create the main component
+
+We will now create the main component that holds all the rendering logic for our app. In this subsection, we will setup the code to make an API to ```GET``` all the todo-items and display them in a neat list
+
+```
+import * as React from 'react';
+import { ITodoItem } from './models/todoItem';
+import * as TodoApi from './api/todoApi';
+import './styles/app.css';
+
+interface IAppProps { }
+
+interface IAppState {
+    todoItems: Array<ITodoItem>;
+    isLoading: boolean;
+    textInputValue: string;
+}
+
+export default class App extends React.Component<IAppProps, IAppState> {
+    constructor(props: IAppProps) {
+        super(props);
+
+        // Initial default App state
+        this.state = {
+            todoItems: [],
+            isLoading: true,
+            textInputValue: ''
+        };
+    }
+
+    public componentWillMount() {
+        // Perform a GET request to fetch all the Todo Items from the server
+        TodoApi.getAllTodoItems()
+            .then((items) => {
+                // Update the App State
+                this.setState({
+                    ...this.state,
+                    todoItems: items,
+                    isLoading: false
+                });
+            });
+    }
+
+    public renderTodoItems = () => {
+        let items: JSX.Element[] = [];
+
+        this.state.todoItems.forEach((item, idx) => {
+            items.push(<li key={idx}>{item.name}</li>);
+        });
+
+        return (
+            <div>
+                <h2>Your Todo Items:</h2>
+                <ul>
+                    {items}
+                </ul>
+            </div>
+        );
+    }
+
+    public render() {
+        return (
+            <div className='container'>
+                <div>
+                    {this.state.isLoading && "Loading, please wait..."}
+                </div>
+                {
+                    this.state.todoItems.length > 0
+                    && this.renderTodoItems()
+                }
+            </div>
+        );
+    }
+}
+```
+
 ### Add some styling
+
+Create a new folder called ```styles``` under the ```src``` directory. Add the following code to ```app.css```:
+
+```
+.container {
+    position: relative;
+    left: 40%;
+    top: 40%;
+}
+```
 
 ## Launch the app
 
