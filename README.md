@@ -23,6 +23,7 @@ To keep the tutorial simple, the app doesn't use a persistent database. Instead,
 * Asp.NET Core SDK (https://www.microsoft.com/net/download/macos)
 * Visual Studio 2017 (https://www.microsoft.com/net/download/macos)
 * Node.js (https://nodejs.org/en/, download the LTS version)
+* Visual Studio Code (https://code.visualstudio.com/)
 
 ## Download the Starter Kit
 
@@ -366,6 +367,15 @@ app.UseMvc(routes =>
 ```
 
 ## Build the React App
+
+The following sections will walk you hooking up all the necessary elements to create a React app that:
+* GET's and displays the existing list of to-do items
+* Provides a form control for adding new items
+* Uses the React component internal state for client side state management. (Note: using the React component internal state for client side state management is an extremely bad idea. This toy app only uses it for the sake of simplicity. Please use other libraries like [Redux](https://redux.js.org/), [MobX](https://github.com/mobxjs), etc)
+
+As a prerequisite to working on this section, navigate to the ```Website``` folder on your terminal. Among many other resources, this directory contains your ```package.json``` file and constitutues the **root directory** for your webclient. Run ```npm start``` to install all the necessary modules and their dependencies.
+
+Once complete, open the ```Website``` folder in ```Visual Studio Code```.
 
 ### Create the Singleton API Client
 
