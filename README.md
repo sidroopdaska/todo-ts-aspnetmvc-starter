@@ -10,7 +10,7 @@ This hands-on workshop walks you through building a Single Page Application (SPA
 
 The diagram below shows basic design of the app.
 
-<img src='readme_images/app-arch.png' width=500 /> 
+<img src='readme_images/app-arch.PNG' width=500 /> 
 
 A *model* is an object that represents the data in the app. In this case, the only model is a to-do item. Models are represented as C# classes, also know as Plain Old C# Object (POCOs).
 
