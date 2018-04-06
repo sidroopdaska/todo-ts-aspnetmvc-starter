@@ -25,6 +25,37 @@ To keep the tutorial simple, the app doesn't use a persistent database. Instead,
 * Node.js (https://nodejs.org/en/, download the LTS version)
 * Visual Studio Code (https://code.visualstudio.com/)
 
+## Starting on Linux
+
+You will need to setup a Docker image for running the dotnet compiler and
+executing the application artifact.
+
+There is a Dockerfile available in the root of this repo, run this command
+to build the image:
+
+```bash
+docker build --force-rm -t mstodo:latest .
+```
+
+Then you can execute dotnet commands like so:
+
+**Note**: This exposes port 3001 so you can access the webapp. It also
+mounts your current directory into `/app` in the container, and uses it as
+the working directory.
+
+```bash
+docker run -p 3001:3001 -v $(pwd):/app mstools:latest dotnet [ARGS]
+
+# Example: Build the app binaries (run from the root of the repo)
+docker run -p 3001:3001 -v $(pwd):/app mstools:latest dotnet build
+
+# Example: Run the app
+cd Website
+docker run -p 3001:3001 -v $(pwd):/app mstools:latest dotnet run
+```
+
+The frontend is managed with NPM. You should be able to install and use it without a Docker image.
+
 ## Download the Starter Kit
 
 Download the boilerplate code by cloning the [todo-ts-aspnetmvc-starter](https://github.com/sidroopdaska/todo-ts-aspnetmvc-starter) repository 
